@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Phaser Game</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
+</head>
+<body>
+  <script>
+    // Game configuration
+    const config = {
+      type: Phaser.AUTO,
+      width: 800,
+      height: 600,
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 300 },
+          debug: false
+        }
+      },
+      scene: {
+        preload: preload,
+        create: create,
+        update: update
+      }
+    };
+
+    // Game variables
+    let player;
+    let platforms;
+    let coins;
+    let score = 0;
+    let scoreText;
+
+    // Create the game
+    const game = new Phaser.Game(config);
+
+    // Preload assets
+    function preload() {
+      this.load.image('sky', 'https:                                
+      this.load.image('ground', 'https://via.placeholder.com/400x100');
+      this.load.image('coin', 'https:                              
+      this.load.spritesheet('dude', 'https://via.placeholder.com/32x48', { frameWidth: 32, frameHeight: 48 });
+    }
+
+    // Create game objects
+    function create() {
+      // Add sky background
+      this.add.image(400, 300, 'sky');
+
+      // Add platforms
+      platforms = this.physics.add.staticGroup();
+      platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+      platforms.create(600, 400, 'ground');
+      platforms.create(50, 250, 'ground');
+      platforms.create(750, 220, 'ground');
+
+      // Add player
+      player = this.physics.add.sprite(100, 450, 'dude');
+      player.setBounce(0.2);
+      player.setCollideWorldBounds(true);
+
+      // Add animations
+      this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'turn',
+        frames: [{ key: 'dude', frame: 4 }],
+        frameRate: 20
+      });
+
+      this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+      });
+
+      // Add coins
+      coins = this.physics.add.group();
+      coins.create(300, 200, 'coin');
+      coins.create(500, 400, 'coin');
+      coins.create(700, 100, 'coin');
+
+      // Add collision detection
+      this.physics.add.collider(player, platforms);
+      this.physics.add.collider(player, coins, collectCoin, null, this);
+
+      // Add score text
+      scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '         
+
+                            
+      this.cursors = this.input.keyboard.createCursorKeys();
+    }
+
+                        
+    function update() {
+      if (this.cursors.left.isDown) {
+        player.setVelocityX(-160);
+        player.anims.play('left', true);
+      } else if (this.cursors.right.isDown) {
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+      } else {
+        player.setVelocityX(0);
+        player.anims.play('turn');
+      }
+
+      if (this.cursors.up.isDown && player.body.touching.down) {
+        player.setVelocityY(-330);
+      }
+    }
+
+                            
+    function collectCoin(player, coin) {
+      coin.disableBody(true, true);
+      score += 10;
+      scoreText.setText('Score: ' + score);
+    }
+  </script>
+</body>
+</html>
+
