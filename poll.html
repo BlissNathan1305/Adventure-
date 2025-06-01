@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Nigeria's Next President Poll</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .poll-container {
+      width: 50%;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid      
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .poll-question {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .poll-options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .poll-options li {
+      margin-bottom: 10px;
+    }
+    .poll-options input[type="radio"] {
+      margin-right: 10px;
+    }
+    .poll-results {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="poll-container">
+    <h2 class="poll-question">Who will be Nigeria's next president?</h2>
+    <ul class="poll-options">
+      <li>
+        <input type="radio" id="tinubu" name="president" value="Bola Tinubu">
+        <label for="tinubu">A. Bola Tinubu</label>
+      </li>
+      <li>
+        <input type="radio" id="obi" name="president" value="Peter Obi">
+        <label for="obi">B. Peter Obi</label>
+      </li>
+      <li>
+        <input type="radio" id="atiku" name="president" value="Atiku Abubakar">
+        <label for="atiku">C. Atiku Abubakar</label>
+      </li>
+    </ul>
+    <button id="vote-btn">Vote</button>
+    <div class="poll-results" id="poll-results"></div>
+  </div>
+
+  <script>
+    let votes = {
+      "Bola Tinubu": 0,
+      "Peter Obi": 0,
+      "Atiku Abubakar": 0
+    };
+
+    document.getElementById("vote-btn").addEventListener("click", () => {
+      const selectedOption = document.querySelector('input[name="president"]:checked');
+      if (selectedOption) {
+        const selectedValue = selectedOption.value;
+        votes[selectedValue]++;
+        displayResults();
+      } else {
+        alert("Please select an option");
+      }
+    });
+
+    function displayResults() {
+      const resultsHtml = `
+        <h2>Poll Results:</h2>
+        <p>A. Bola Tinubu: ${votes["Bola Tinubu"]} votes</p>
+        <p>B. Peter Obi: ${votes["Peter Obi"]} votes</p>
+        <p>C. Atiku Abubakar: ${votes["Atiku Abubakar"]} votes</p>
+      `;
+      document.getElementById("poll-results").innerHTML = resultsHtml;
+    }
+  </script>
+</body>
+</html>
+
