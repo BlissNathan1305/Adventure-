@@ -1,0 +1,20 @@
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+document.body.appendChild(canvas);
+
+canvas.width = 400;
+canvas.height = 400;
+
+function drawPolygon(sides, size, x, y) {
+  ctx.beginPath();
+  ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0));
+
+  for (let i = 1; i <= sides; i++) {
+    const angle = (i / sides) * 2 * Math.PI;
+    ctx.lineTo(x + size * Math.cos(angle), y + size * Math.sin(angle));
+  }
+
+  ctx.stroke();
+}
+
+drawPolygon(5, 100, 200, 200); // Draw a pentagon
